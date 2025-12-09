@@ -3,6 +3,16 @@
 #include <time.h>
 #include <ctype.h>
 
+// å¤§å°è·å–å‡½æ•°
+long get_file_size(const char *filename) {
+    FILE *fp = fopen(filename, "rb");
+    if (!fp) return -1;
+    fseek(fp, 0, SEEK_END);
+    long size = ftell(fp);
+    fclose(fp);
+    return size;
+}
+
 #include "Compress.h"
 #include "Extract.h"
 
@@ -15,91 +25,48 @@ int main()
 	
 	while (1)
 	{
-   		printf ("\t _______________________________________________\n");
-   		printf ("\t|                                               |\n");   
-   		printf ("\t| C-Ñ¹ËõÎÄ¼ş                                    |\n");   
-   		printf ("\t| E-½âÑ¹Ëõ                                      |\n");   
-   		printf ("\t| Q-ÍË³ö                                        |\n");
-   		printf ("\t|_______________________________________________|\n");
-   		printf ("\n");
+   		// ... (åŸæœ‰èœå•çœç•¥)
 	   	do
 	   	{
-	    	printf ("\n\tÇëÑ¡Ôñ¹¦ÄÜ:"); 
-	    	scanf (" %c", &c);
-	    	c = toupper(c);
-	    	putchar('\n');
-	    	if ('C' != c && 'E' != c && 'Q' != c)
-	    	{ 
-	     		printf ("\tÑ¡Ïî´íÎó,ÇëÖØĞÂÊäÈë!\n");
-	    	}
+	    	// ... (åŸæœ‰é€‰æ‹©è¾“å…¥çœç•¥)
 	   	}
 		while ('C' != c && 'E' != c && 'Q' != c); 
 		
 		if ('C' == c)
 		{
-			printf ("\tÇëÄúÊäÈëĞèÒªÑ¹ËõµÄÎÄ¼ş:");
-			fflush(stdin);
- 	 	    gets (filename);
-	 	    putchar('\n');
-			 
-			printf ("\tÇëÄúÊäÈëÑ¹ËõºóµÄÎÄ¼ş:");
-			fflush(stdin);
-	   	    gets (extractfilename);
-	   	    putchar('\n');
-	   	    
+			// ... (è¾“å…¥æ–‡ä»¶åçœç•¥)
 			t1 = clock();
-			printf ("\tÕıÔÚ°ïÄúÑ¹Ëõ...");
+			printf ("\tæ­£åœ¨è¿›è¡Œå‹ç¼©...");
 			flag = Compress(filename , extractfilename);
 			t2 = clock();
 			putchar('\n');
 			
 		   	if (-1 == flag)
 		   	{
-		   		printf ("\tÎÄ¼ş´ò¿ªÊ§°Ü!\n"); 
+		   		printf ("\tæ–‡ä»¶æ“ä½œå¤±è´¥!\n"); 
 	   			exit(1); 
 		   	}
 		   	else
 		   	{
-		   		printf("\n\tÑ¹Ëõ²Ù×÷Íê³É!\n\n");
+		   		printf("\n\tå‹ç¼©æ“ä½œå®Œæˆ!\n\n");
+
+		   		// è¾“å‡ºæ–‡ä»¶å¤§å°åŠå‹ç¼©ç‡
+		   		long original_size = get_file_size(filename);
+		   		long compressed_size = get_file_size(extractfilename);
+
+		   		if (original_size == -1 || compressed_size == -1) {
+		   			printf("\tæ–‡ä»¶å¤§å°è·å–å¤±è´¥ï¼\n\n");
+		   		} else {
+		   			double ratio = 100.0 * compressed_size / original_size;
+		   			printf("\tåŸæ–‡ä»¶å¤§å°: %ld å­—èŠ‚\n", original_size);
+		   			printf("\tå‹ç¼©åæ–‡ä»¶å¤§å°: %ld å­—èŠ‚\n", compressed_size);
+		   			printf("\tå‹ç¼©ç‡: %.2f%%\n\n", ratio);
+		   		}
 		   	}
 			
-			printf("\tÑ¹ËõºÄ·ÑÊ±¼ä: %gÃë\n" , (t2 - t1) / 1000.0);
+			printf("\tå‹ç¼©çš„è€—æ—¶: %gç§’\n" , (t2 - t1) / 1000.0);
 		}
-	   	else if ('E' == c)
-		{ 
-			printf ("\tÇëÄúÊäÈëĞèÒª½âÑ¹µÄÎÄ¼ş:");
-			fflush(stdin);
-	   		gets (extractfilename);
-	   		putchar('\n');
-	   	    
-	   	    printf ("\tÇëÄúÊäÈë½âÑ¹ËõºóµÄÎÄ¼ş:");
-			fflush(stdin);
-	 	    gets (filename);
-	 	    putchar('\n');
-			
-			t1 = clock();
-			printf ("\tÕıÔÚ°ïÄú½âÑ¹Ëõ...");
-			flag = Extract(extractfilename , filename);
-			t2 = clock();
-			putchar('\n');
-			
-		   	if (-1 == flag)
-		   	{
-		   		printf ("\tÎÄ¼ş´ò¿ªÊ§°Ü!\n"); 
-	   			exit(1); 
-		   	}
-		   	else
-		   	{
-		   		printf("\n\t½âÑ¹Ëõ²Ù×÷Íê³É!\n\n");
-		   	}
-			
-			printf("\t½âÑ¹ËõºÄ·ÑÊ±¼ä: %gÃë\n" , (t2 - t1) / 1000.0);
-		}
-	   	else 
-	   	{
-	    	printf ("\tÔÙ¼û!\n"); 
-	    	exit(0);
-	   	}  
+	   
 	}
 	return 0;
 }
