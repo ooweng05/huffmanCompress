@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <ctype.h>
-
 #include "Compress.h"
 #include "Extract.h"
+
 long get_file_size(const char *filename) {
     FILE *fp = fopen(filename, "rb");
     if (!fp) return -1;
