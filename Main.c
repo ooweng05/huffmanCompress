@@ -25,100 +25,100 @@ int main()
 	{
    		printf ("\t _______________________________________________\n");
    		printf ("\t|                                               |\n");   
-   		printf ("\t| C-压缩文件                                    |\n");   
-   		printf ("\t| E-解压缩                                      |\n");   
-   		printf ("\t| Q-退出                                        |\n");
+   		printf ("\t| C-compress                                    |\n");   
+   		printf ("\t| E-decompress                                  |\n");   
+   		printf ("\t| Q-exit                                        |\n");
    		printf ("\t|_______________________________________________|\n");
    		printf ("\n");
 	   	do
 	   	{
-	    	printf ("\n\t请选择功能:"); 
+	    	printf ("\n\tPlease select the function:"); 
 	    	scanf (" %c", &c);
 	    	c = toupper(c);
 	    	putchar('\n');
 	    	if ('C' != c && 'E' != c && 'Q' != c)
 	    	{ 
-	     		printf ("\t选项错误,请重新输入!\n");
+	     		printf ("\tFunction error,please select again!\n");
 	    	}
 	   	}
 		while ('C' != c && 'E' != c && 'Q' != c); 
 		
 		if ('C' == c)
 		{
-			printf ("\t请您输入需要压缩的文件:");
+			printf ("\tPlease enter the file that needs to be compressed:");
 			fflush(stdin);
  	 	    gets (filename);
 	 	    putchar('\n');
 			 
-			printf ("\t请您输入压缩后的文件:");
+			printf ("\tPlease enter the compressed file:");
 			fflush(stdin);
 	   	    gets (extractfilename);
 	   	    putchar('\n');
 	   	    
 			t1 = clock();
-			printf ("\t正在帮您压缩...");
+			printf ("\tCompressing...");
 			flag = Compress(filename , extractfilename);
 			t2 = clock();
 			putchar('\n');
 			
 		   	if (-1 == flag)
 		   	{
-		   		printf ("\t文件打开失败!\n"); 
+		   		printf ("\tFailed to open the file!\n"); 
 	   			exit(1); 
 		   	}
 		   	else
 		   	{
-		   		printf("\n\t压缩操作完成!\n\n");
+		   		printf("\n\tCompression completed!\n\n");
 				// 获取文件大小
     long original_size = get_file_size(filename);
     long compressed_size = get_file_size(extractfilename);
     if (original_size == -1 || compressed_size == -1) {
-        printf("\t文件大小获取失败！\n\n");
+        printf("\tFailed to obtain the file size！\n\n");
     } else {
         // 计算压缩率
         double ratio = 100.0 * compressed_size / original_size;
-        printf("\t原文件大小: %ld 字节\n", original_size);
-        printf("\t压缩后文件大小: %ld 字节\n", compressed_size);
-        printf("\t压缩率: %.2f%%\n\n", ratio);
+        printf("\tOriginal size: %ld Byte\n", original_size);
+        printf("\tCompressed size: %ld Byte\n", compressed_size);
+        printf("\tCompression ratio: %.2f%%\n\n", ratio);
     }
 
 		   	}
 			
-			printf("\t压缩耗费时间: %g秒\n" , (t2 - t1) / 1000.0);
+			printf("\tCompression time consumption: %gseconds\n" , (t2 - t1) / 1000.0);
 		}
 	   	else if ('E' == c)
 		{ 
-			printf ("\t请您输入需要解压的文件:");
+			printf ("\tPlease enter the file that needs to be decompressed:");
 			fflush(stdin);
 	   		gets (extractfilename);
 	   		putchar('\n');
 	   	    
-	   	    printf ("\t请您输入解压缩后的文件:");
+	   	    printf ("\tPlease enter the decompressed file:");
 			fflush(stdin);
 	 	    gets (filename);
 	 	    putchar('\n');
 			
 			t1 = clock();
-			printf ("\t正在帮您解压缩...");
+			printf ("\tDecompressing...");
 			flag = Extract(extractfilename , filename);
 			t2 = clock();
 			putchar('\n');
 			
 		   	if (-1 == flag)
 		   	{
-		   		printf ("\t文件打开失败!\n"); 
+		   		printf ("\tFailed to open the file!\n"); 
 	   			exit(1); 
 		   	}
 		   	else
 		   	{
-		   		printf("\n\t解压缩操作完成!\n\n");
+		   		printf("\n\tDecompression completed!\n\n");
 		   	}
 			
-			printf("\t解压缩耗费时间: %g秒\n" , (t2 - t1) / 1000.0);
+			printf("\tDecompression time consumption: %gseconds\n" , (t2 - t1) / 1000.0);
 		}
 	   	else 
 	   	{
-	    	printf ("\t再见!\n"); 
+	    	printf ("\tGoodbye!\n"); 
 	    	exit(0);
 	   	}  
 	}
