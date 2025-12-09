@@ -3,6 +3,8 @@
 #include <time.h>
 #include <ctype.h>
 
+#include "Compress.h"
+#include "Extract.h"
 // 大小获取函数
 long get_file_size(const char *filename) {
     FILE *fp = fopen(filename, "rb");
@@ -12,9 +14,6 @@ long get_file_size(const char *filename) {
     fclose(fp);
     return size;
 }
-
-#include "Compress.h"
-#include "Extract.h"
 
 int main() 
 {
