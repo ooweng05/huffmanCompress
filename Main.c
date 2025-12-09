@@ -5,6 +5,14 @@
 
 #include "Compress.h"
 #include "Extract.h"
+long get_file_size(const char *filename) {
+    FILE *fp = fopen(filename, "rb");
+    if (!fp) return -1;
+    fseek(fp, 0, SEEK_END);
+    long size = ftell(fp);
+    fclose(fp);
+    return size;
+}
 
 int main() 
 {
@@ -61,6 +69,19 @@ int main()
 		   	else
 		   	{
 		   		printf("\n\t压缩操作完成!\n\n");
+				// 获取文件大小
+    long original_size = get_file_size(filename);
+    long compressed_size = get_file_size(extractfilename);
+    if (original_size == -1 || compressed_size == -1) {
+        printf("\t文件大小获取失败！\n\n");
+    } else {
+        // 计算压缩率
+        double ratio = 100.0 * compressed_size / original_size;
+        printf("\t原文件大小: %ld 字节\n", original_size);
+        printf("\t压缩后文件大小: %ld 字节\n", compressed_size);
+        printf("\t压缩率: %.2f%%\n\n", ratio);
+    }
+
 		   	}
 			
 			printf("\t压缩耗费时间: %g秒\n" , (t2 - t1) / 1000.0);
